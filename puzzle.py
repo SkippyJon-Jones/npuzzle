@@ -68,8 +68,6 @@ def computeVerticalState(state, locationOfSpace, pos):
 	tempstate[row][col] = num
 	tempstate[row + pos][col] = "*"
 	returnlist1 = [num, tempstate]
-	# DebugPrint(tempstate)
-	# print("\n")
 	return returnlist1
 
 def computeHorizontalState(state, locationOfSpace, pos):
@@ -80,9 +78,56 @@ def computeHorizontalState(state, locationOfSpace, pos):
 	tempstate[row][col] = num
 	tempstate[row][col + pos] = "*"
 	returnlist2 = [num, tempstate]
-	# DebugPrint(tempstate)
-	# print("\n")
 	return returnlist2
+
+def IsGoal(state):
+	i = 1
+	positionOfSpace = (len(state) ** 2) 
+	for row in state:
+		for element in row:
+			if(i == positionOfSpace and element == "*"):
+				return True
+			if(element == "*"):
+				return False
+			if (int(element) != i):
+				return False
+			i = i +1
+
+def BFS(state):
+	frontier = [state]
+	discovered = set(map(tuple, flatten(state)))
+
+	parents = {map(tuple, flatten(state)): None}
+
+	while frontier:
+		current_state = frontier.pop(0)
+
+		discovered.add(map(tuple, flatten(current_state)))
+
+		if IsGoal(current_state):
+			tiles = []
+			print(parents[map(tuple, flatten(current_state))])
+			currentkey = parents[current_state]
+			while currentkey != None:
+				tiles.append(currentkey)
+				currentkey = tuple(currentkey).get()
+			return tiles
+		for neighbor in computeNeighbors(current_state):
+			# print("x")
+			if (map(tuple, neighbor)) not in discovered:
+				print("y")
+				frontier.append(neighbor[1])
+				discovered.add((map(tuple, flatten(neighbor))))	
+				parents[map(tuple, flatten(neighbor))] = current_state
+
+def flatten(state):
+	list2d = []
+	list = []
+	for row in state:
+		for element in row:
+			list.append(element)
+	list2d.append(list)
+	return list2d
 
 
 def main():
@@ -90,16 +135,19 @@ def main():
 	gamestate = (LoadFromFile("npuzzledata.txt"))
 	print(gamestate)
 	print("\n")
-	#print(computeNeighbors(gamestate))
 	DebugPrint(gamestate)
 	print("\n")
+
+	print(BFS(gamestate))
+	# print(IsGoal(gamestate))
+	#print(computeNeighbors(gamestate))
 	#print(computeNeighbors(gamestate))
 
-	list = computeNeighbors(gamestate)
-	DebugPrint(gamestate)
-	print("\n")
-	for x in list:
-		DebugPrint(x[1])
-		print("\n")
+	# list = computeNeighbors(gamestate)
+	# DebugPrint(gamestate)
+	# print("\n")
+	# for x in list:
+	# 	DebugPrint(x[1])
+	# 	print("\n")
 
 main()
