@@ -14,7 +14,7 @@ def LoadFromFile(filepath):
 		i = i.rstrip()
 		y = i.split("\t")
 
-		# checks ot see if each line is too long
+		# checks to see if each line is too long
 		if (len(y) > n):
 			return None
 
@@ -40,8 +40,6 @@ def DebugPrint(state):
 
 def computeNeighbors(state):
 	locationOfSpace = []
-
-
 	listnum = 0
 	elementnum = 0
 
@@ -56,7 +54,6 @@ def computeNeighbors(state):
 		listnum += 1
 		elementnum = 0
 
-	
 	# list representaion of neighbor states
 	returnlist = []
 
@@ -79,7 +76,6 @@ def computeNeighbors(state):
 
 	# converts the list rep to a tuple rep
 	tuplelist = tuple(returnlist)
-
 	return tuplelist
 
 # finds the neighboring state that requires moving
@@ -101,7 +97,6 @@ def computeVerticalState(state, locationOfSpace, pos):
 
 	# returns both the neigboring gamestate and the tiles that was moved
 	returntuple = (num, tuplestate)
-
 	return returntuple
 
 # finds the neighboring state that requires moving
@@ -122,7 +117,6 @@ def computeHorizontalState(state, locationOfSpace, pos):
 
 	# returns both the neigboring gamestate and the tiles that was moved
 	returntuple = (num, tuplestate)
-
 	return returntuple
 
 def IsGoal(state):
@@ -146,7 +140,6 @@ def IsGoal(state):
 def BFS(state):
 	frontier = [state]
 	discovered = set(state)
-
 	parents = {state: None}
 
 	while frontier:
@@ -161,7 +154,6 @@ def BFS(state):
 			states = []
 			states.append(current_state)
 			tiles = []
-
 			currentkey = parents[current_state]
 
 			# backtracks through the parents to find the states that
@@ -201,13 +193,11 @@ def BFS(state):
 def DFS(state):
 	frontier = [state]
 	discovered = set(state)
-
 	parents = {state: None}
 
 	while frontier:
 		# pops the front element of the frontier to search
 		current_state = frontier.pop(0)
-
 		discovered.add(current_state)
 
 		# backtracks through the parents to find the states that
@@ -235,7 +225,6 @@ def DFS(state):
 
 			# puts the list of tiles into the correct order
 			tiles.reverse()
-
 			return tiles
 
 		# loops through the neighbors of the current state
@@ -255,9 +244,7 @@ def DFS(state):
 #  searching from the goal state and the original
 #  game state
 def BidirectionalSearch(state):
-
 	goalstate = getGoalState(state)
-
 	# creates two of each data structure for the 
 	#  two simulataneous searches
 	frontier = [state]
@@ -309,12 +296,9 @@ def BidirectionalSearch(state):
 			# reverses the tiles into the correct order
 			tiles.reverse()
 
-
-
 			statesgoal = []
 			statesgoal.append(current_stateGoal)
 			tilesgoal = []
-
 			currentkeygoal = parentsGoal[current_stateGoal]
 
 			# backtracks from the current state to the goal state
@@ -335,7 +319,6 @@ def BidirectionalSearch(state):
 			# combines both series of tiles into one list
 			for x in tilesgoal:
 				tiles.append(x)
-
 
 			return tiles
 
